@@ -1,0 +1,54 @@
+// eliminate parameters ....
+// 
+// August 25, 2026
+
+LIB "primdec.lib";
+LIB "qhmoduli.lib";
+
+system("--browser", "mac");
+
+/*
+LIB "solve.lib";
+LIB "poly.lib";
+LIB "primdec.lib";
+LIB "qhmoduli.lib";
+*/
+
+system("--browser", "mac");
+option("redSB");
+
+int tStart = timer;
+
+string cmd;
+/*
+cmd=read("/Users/eallman/Dropbox/f4/calc/f4.sing");
+execute(cmd);
+*/
+
+// Remember to edit ring declaration
+
+ring R = 0, (f2_ab, f2_ac, f2_ad, f2_bc, f2_bd, f2_cd,a,b,z,c,d), dp;
+
+degBound = 0;
+"degBound is", degBound;
+
+
+// Tree
+"    a         c";
+"     \\__z___/ ";
+"     /       \ ";
+"    b         d";
+
+poly p2_ab = a+b;
+poly p2_ac = a+z+c;
+poly p2_ad = a+z+d;
+poly p2_bc = b+z+c;
+poly p2_bd = b+z+d;
+poly p2_cd = c+d;
+
+ideal T = f2_ab-p2_ab, f2_ac-p2_ac, f2_ad-p2_ad, f2_bc-p2_bc, f2_bd-p2_bd, f2_cd-p2_cd;
+
+listvar(R);
+ideal I = elim1(T,a*b*c*d*z);
+
+

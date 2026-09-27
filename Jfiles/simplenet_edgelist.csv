@@ -1,0 +1,12 @@
+source,target,type,weight
+i4,a,edge,0.1
+i3,b,edge,0.05
+i1,c1,edge,0.001
+i1,c2,edge,0.001
+H1,i1,edge,0.02
+i5,H1,admix,0.5
+i6,H1,admix,0.5
+i3,i2,edge,0.03
+i4,i3,edge,0.05
+i2,i5,edge,0.01
+i2,i6,edge,0.02
