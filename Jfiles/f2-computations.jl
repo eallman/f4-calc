@@ -61,7 +61,6 @@ J = eliminate(Jbig,[a,b,c,d,z])
 dim(J)-5
 =#
 
-
 ##
 # f2 ideal
 T = ideal(R, [
@@ -137,6 +136,7 @@ println(I)
 # Print execution time
 println("\nElapsed time: ", time() - t_start, " seconds")
 
+##
 psi = hom(R2, R3, vcat(gens(R3), fill(zero(R3), 4)))
 TT = psi(T)
 
