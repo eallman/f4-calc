@@ -90,18 +90,31 @@ println("\nElapsed time: ", time() - t_start, " seconds")
 # Now do the 4₁-cycle:
 
 # draw picture later
+
+R3, (f2_ab, f2_ac, f2_ad, f2_bc, f2_bd, f2_cd,γ, h1, h2, l1, l2) = 
+    polynomial_ring(QQ,[:f2_ab, :f2_ac, :f2_ad, :f2_bc, :f2_bd, :f2_cd, 
+    :γ, :h1, :h2, :l1, :l2],
+    internal_ordering=:degrevlex
+    )
+
 R2, (f2_ab, f2_ac, f2_ad, f2_bc, f2_bd, f2_cd,γ, h1, h2, l1, l2, a, b, c, d) = 
     polynomial_ring(QQ,[:f2_ab, :f2_ac, :f2_ad, :f2_bc, :f2_bd, :f2_cd, 
     :γ, :h1, :h2, :l1, :l2, :a, :b, :c, :d],
     internal_ordering=:degrevlex
     )
 
+println("Ring R2: \n")
+println("Variables:    ", symbols(R2))
+println("Var Count:    ", nvars(R2))
+# println("Base Field:   ", base_ring(R2))
+# println("Term Order:   ", internal_ordering(R2))
+
 p2_ab = a + b + l1 + l2
-p2_ac = a + c + γ*(h1+l1) + (1 - γ)*h2+l2
+p2_ac = a + c + γ^2*h1 + (1-γ)^2*(h2+l2+l1)
 p2_ad = a + d + l1
-p2_bc = b + c + γ*(h1+l1) + (1 - γ)*h2+l2
+p2_bc = b + c + γ^2*h2 + (1-γ)^2*(h1+l1+l2)
 p2_bd = b + d + l2
-p2_cd = c + d + γ*(h1+l1) + (1 - γ)*h2+l2
+p2_cd = c + d + γ^2*(h1+l1)+ (1 - γ)^2*(h2+l2)
 
 # f2 ideal
 T = ideal(R2, [
@@ -123,4 +136,12 @@ println(I)
 
 # Print execution time
 println("\nElapsed time: ", time() - t_start, " seconds")
+
+psi = hom(R2, R3, vcat(gens(R3), fill(zero(R3), 4)))
+TT = psi(T)
+
+II = eliminate(TT, gens(R3)[7:11])
+
+
+
 ##
