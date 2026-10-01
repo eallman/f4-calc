@@ -111,7 +111,7 @@ println("Var Count:    ", nvars(R2))
 p2_ab = a + b + l1 + l2
 p2_ac = a + c + γ^2*h1 + (1-γ)^2*(h2+l2+l1)
 p2_ad = a + d + l1
-p2_bc = b + c + γ^2*h2 + (1-γ)^2*(h1+l1+l2)
+p2_bc = b + c + γ^2*(h1+l1+l2) + (1-γ)^2*h2
 p2_bd = b + d + l2
 p2_cd = c + d + γ^2*(h1+l1)+ (1 - γ)^2*(h2+l2)
 
