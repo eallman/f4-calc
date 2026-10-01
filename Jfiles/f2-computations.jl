@@ -142,6 +142,13 @@ TT = psi(T)
 
 II = eliminate(TT, gens(R3)[7:11])
 
+q2_ab = psi(p2_ab)
+q2_ac = psi(p2_ac)
+q2_ad = psi(p2_ad)
+q2_bc = psi(p2_bc)
+q2_bd = psi(p2_bd)
+q2_cd = psi(p2_cd)
+
 
 
 ##
