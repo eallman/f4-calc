@@ -155,10 +155,85 @@ println(" ")
 
 # 5-cycle 
 #    
-#         c  x2  d
+#         c  l2  d
 #          \____/
 #           |   |
-#         x1|   |x3
+#         l1|   |l3
 #        b - \ / - e
 #             |
 #             a   
+
+
+# R4, (f2_ab, f2_ac, f2_ad, f2_bc, f2_bd, f2_cd,γ, h1, h2, l1, l2) = 
+#     polynomial_ring(QQ,[:f2_ab, :f2_ac, :f2_ad, :f2_bc, :f2_bd, :f2_cd, 
+#     :γ, :h1, :h2, :l1, :l2],
+#     internal_ordering=:degrevlex
+#     )
+
+R5, (f2_ab, f2_ac, f2_ad, f2_ae, f2_bc, f2_bd, f2_be, f2_cd, f2_ce, f2_de,γ, h1, h2, l1, l2, l3, a, b, c, d, e) = 
+    polynomial_ring(QQ,[:f2_ab, :f2_ac, :f2_ad, :f2_be, :f2_bc, :f2_bd, :f2_be, :f2_cd, :f2_ce, :f2_de,
+    :γ, :h1, :h2, :l1, :l2, :l3, :a, :b, :c, :d, :e],
+    internal_ordering=:degrevlex
+    )
+
+
+println("Ring R5: \n")
+println("Variables:    ", symbols(R5))
+println("Var Count:    ", nvars(R5))
+
+p2_ab = a + b + γ^2*h1 + (1-γ)^2*(h2+l1+l2+l3)
+p2_ac = a + c + γ^2*(h1+l1) +(1-γ)^2*(h2+l3+l2)
+p2_ad = a + d + γ^2*(h1+l1+l2) + (1-γ)^2*(h2+l3)
+p2_ae = a + e + γ^2*(h1+l1+l2+l3) + (1-γ)^2*h2
+
+p2_bc = b + c + l1
+p2_bd = b + d + l1+l2
+p2_be = b + e + l1+l2+l3
+
+p2_cd = c + d + l2
+p2_ce = c + e + l2+l3
+
+p2_de = d + e + l3
+
+# f2 ideal
+T5 = ideal(R5, [
+    f2_ab - p2_ab, 
+    f2_ac - p2_ac, 
+    f2_ad - p2_ad, 
+    f2_ae - p2_ae,    
+    f2_bc - p2_bc, 
+    f2_bd - p2_bd,
+    f2_be - p2_be, 
+    f2_cd - p2_cd,
+    f2_ce - p2_ce,
+    f2_de - p2_de
+])
+
+
+t_start = time()
+
+# eliminate parameters (BLs)
+I5 = eliminate(T5, [a, b, c, d, e, γ, h1, h2, l1, l2, l3])
+
+# Print execution time
+println("\nElapsed time: ", time() - t_start, " seconds")
+
+println("\nIdeal Generators on 5₁-cycle [a hybrid of d,e   [alphabetical clockwise]]:")
+println(I5)
+
+dim(I5) - 11
+
+##
+
+L1 = eliminate(T5, [a, b, c, d, e, γ, h1, h2, l2, l3])
+L2 = eliminate(T5, [a, b, c, d, e, γ, h1, h2, l1, l3])
+L3 = eliminate(T5, [a, b, c, d, e, γ, h1, h2, l1, l2])
+
+H1 = eliminate(T5, [a, b, c, d, e, γ, h1, l1, l2, l3])
+H2 = eliminate(T5, [a, b, c, d, e, γ, h2, l1, l2, l3])
+
+G  = eliminate(T5, [a, b, c, d, e, h1, h2, l1, l2, l3])
+
+println("Totally mimics the 5-cycle for concordance factors.  No surprise here.")
+
+
