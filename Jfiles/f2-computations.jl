@@ -162,6 +162,8 @@ println(" ")
 #        b - \ / - e
 #             |
 #             a   
+#
+#  γ^2 h1 + (1-γ)^2 h2 +a
 
 
 # R4, (f2_ab, f2_ac, f2_ad, f2_bc, f2_bd, f2_cd,γ, h1, h2, l1, l2) = 
@@ -218,7 +220,7 @@ I5 = eliminate(T5, [a, b, c, d, e, γ, h1, h2, l1, l2, l3])
 # Print execution time
 println("\nElapsed time: ", time() - t_start, " seconds")
 
-println("\nIdeal Generators on 5₁-cycle [a hybrid of d,e   [alphabetical clockwise]]:")
+println("\nIdeal Generators on 5₁-cycle [a hybrid of b,e   [alphabetical clockwise]]:")
 println(I5)
 
 dim(I5) - 11
@@ -229,8 +231,8 @@ L1 = eliminate(T5, [a, b, c, d, e, γ, h1, h2, l2, l3])
 L2 = eliminate(T5, [a, b, c, d, e, γ, h1, h2, l1, l3])
 L3 = eliminate(T5, [a, b, c, d, e, γ, h1, h2, l1, l2])
 
-H1 = eliminate(T5, [a, b, c, d, e, γ, h1, l1, l2, l3])
-H2 = eliminate(T5, [a, b, c, d, e, γ, h2, l1, l2, l3])
+H1 = eliminate(T5, [a, b, c, d, e, γ, h2, l1, l2, l3])
+H2 = eliminate(T5, [a, b, c, d, e, γ, h1, l1, l2, l3])   # solve for h2 as a function of f2_x y
 
 G  = eliminate(T5, [a, b, c, d, e, h1, h2, l1, l2, l3])
 
