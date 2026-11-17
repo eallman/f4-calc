@@ -100,7 +100,7 @@ E[2] - E[3]
 E[4]
 
 p2 = [p2_ab, p2_ac, p2_ad, p2_bc, p2_bd, p2_cd]
-t2 = [evaluate(p, [γ], [1]) for p in v]
+t2 = [evaluate(p, [γ,h1,l2], [1,0,0]) for p in p2]
 
 # 4-point:
 # works on tree
