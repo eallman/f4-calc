@@ -1,0 +1,229 @@
+# Sept 29, 2026:  f2 computations now using Julia
+#
+# Aug 26, 2026:   original Singular file
+
+using Oscar
+
+##
+# Now do the 4₁-cycle:
+
+# do NOT use Patterson, but instead Marina labeling
+
+##
+println("              c               ")
+println("              |               ")
+println("         l1  / \\ l2          ")
+println("        b --    -- d          ")
+println("         h1  \\ / h2           ")
+println("              |               ")
+println("              a               ")
+println("                              ")
+##
+
+R3, (f2_ab, f2_ac, f2_ad, f2_bc, f2_bd, f2_cd,γ, h1, h2, l1, l2) = 
+    polynomial_ring(QQ,[:f2_ab, :f2_ac, :f2_ad, :f2_bc, :f2_bd, :f2_cd, 
+    :γ, :h1, :h2, :l1, :l2],
+    internal_ordering=:degrevlex
+    )
+
+R2, (f2_ab, f2_ac, f2_ad, f2_bc, f2_bd, f2_cd,γ, h1, h2, l1, l2, a, b, c, d) = 
+    polynomial_ring(QQ,[:f2_ab, :f2_ac, :f2_ad, :f2_bc, :f2_bd, :f2_cd, 
+    :γ, :h1, :h2, :l1, :l2, :a, :b, :c, :d],
+    internal_ordering=:degrevlex
+    )
+
+println("Ring R2: \n")
+println("Variables:    ", symbols(R2))
+println("Var Count:    ", nvars(R2))
+# println("Base Field:   ", base_ring(R2))
+# println("Term Order:   ", internal_ordering(R2))
+
+p2_ab = a + b + γ^2*h1 + (1-γ)^2*(h2+l2+l1)
+p2_ac = a + c + γ^2*(h1+l1)+ (1 - γ)^2*(h2+l2)
+p2_ad = a + d + γ^2*(h1+l1+l2) + (1-γ)^2*h2
+p2_bc = b + c + l1
+p2_bd = b + d + l1 + l2
+p2_cd = c + d + l2
+
+# f2 ideal
+T = ideal(R2, [
+    f2_ab - p2_ab, 
+    f2_ac - p2_ac, 
+    f2_ad - p2_ad, 
+    f2_bc - p2_bc, 
+    f2_bd - p2_bd, 
+    f2_cd - p2_cd
+])
+
+t_start = time()
+
+# eliminate parameters (BLs)
+I = eliminate(T, [a, b, c, d, γ, h1, h2, l1, l2])
+
+println("\nIdeal Generators on 4₁-cycle [c hybrid of a,b, d outgroup]:")
+println(I)
+
+# Print execution time
+println("\nElapsed time: ", time() - t_start, " seconds")
+
+
+##
+J = ideal(R2, [
+    f2_ab - p2_ab, 
+    f2_ac - p2_ac, 
+    f2_ad - p2_ad, 
+    # f2_bc - p2_bc, 
+    # f2_bd - p2_bd, 
+    # f2_cd - p2_cd
+])
+
+JJ = ideal(R2, [
+    p2_ab, 
+    p2_ac, 
+    p2_ad, 
+    # f2_bc - p2_bc, 
+    # f2_bd - p2_bd, 
+    # f2_cd - p2_cd
+])
+
+##
+p2_ac-p2_ab
+p2_ac-p2_ad
+# p2_ac-p2_ab
+
+E = [    p2_ab, p2_ac, p2_ad, p2_bc, p2_bd, p2_cd ]
+
+E[1] - E[2]
+E[1] - E[3]
+E[2] - E[3]
+
+E[4]
+
+p2 = [p2_ab, p2_ac, p2_ad, p2_bc, p2_bd, p2_cd]
+t2 = [evaluate(p, [γ], [1]) for p in v]
+
+# 4-point:
+# works on tree
+s1 = t2[1] + t2[6]
+s2 = t2[2] + t2[5]
+s3 = t2[3] + t2[4]
+
+d1 = p2[1] + p2[6]
+d2 = p2[2] + p2[5]
+d3 = p2[3] + p2[4]
+
+d1 - d2
+d1 - d3
+d2 - d3
+##
+psi = hom(R2, R3, vcat(gens(R3), fill(zero(R3), 4)))
+TT = psi(T)
+
+II = eliminate(TT, gens(R3)[7:11])
+
+q2_ab = psi(p2_ab)
+q2_ac = psi(p2_ac)
+q2_ad = psi(p2_ad)
+q2_bc = psi(p2_bc)
+q2_bd = psi(p2_bd)
+q2_cd = psi(p2_cd)
+
+println(" ")
+
+
+##
+
+
+
+
+
+
+
+##
+
+# 5-cycle 
+#    
+#         c  l2  d
+#          \____/
+#           |   |
+#         l1|   |l3
+#        b - \ / - e
+#             |
+#             a   
+#
+#  γ^2 h1 + (1-γ)^2 h2 +a
+
+
+# R4, (f2_ab, f2_ac, f2_ad, f2_bc, f2_bd, f2_cd,γ, h1, h2, l1, l2) = 
+#     polynomial_ring(QQ,[:f2_ab, :f2_ac, :f2_ad, :f2_bc, :f2_bd, :f2_cd, 
+#     :γ, :h1, :h2, :l1, :l2],
+#     internal_ordering=:degrevlex
+#     )
+
+R5, (f2_ab, f2_ac, f2_ad, f2_ae, f2_bc, f2_bd, f2_be, f2_cd, f2_ce, f2_de,γ, h1, h2, l1, l2, l3, a, b, c, d, e) = 
+    polynomial_ring(QQ,[:f2_ab, :f2_ac, :f2_ad, :f2_be, :f2_bc, :f2_bd, :f2_be, :f2_cd, :f2_ce, :f2_de,
+    :γ, :h1, :h2, :l1, :l2, :l3, :a, :b, :c, :d, :e],
+    internal_ordering=:degrevlex
+    )
+
+
+println("Ring R5: \n")
+println("Variables:    ", symbols(R5))
+println("Var Count:    ", nvars(R5))
+
+p2_ab = a + b + γ^2*h1 + (1-γ)^2*(h2+l1+l2+l3)
+p2_ac = a + c + γ^2*(h1+l1) +(1-γ)^2*(h2+l3+l2)
+p2_ad = a + d + γ^2*(h1+l1+l2) + (1-γ)^2*(h2+l3)
+p2_ae = a + e + γ^2*(h1+l1+l2+l3) + (1-γ)^2*h2
+
+p2_bc = b + c + l1
+p2_bd = b + d + l1+l2
+p2_be = b + e + l1+l2+l3
+
+p2_cd = c + d + l2
+p2_ce = c + e + l2+l3
+
+p2_de = d + e + l3
+
+# f2 ideal
+T5 = ideal(R5, [
+    f2_ab - p2_ab, 
+    f2_ac - p2_ac, 
+    f2_ad - p2_ad, 
+    f2_ae - p2_ae,    
+    f2_bc - p2_bc, 
+    f2_bd - p2_bd,
+    f2_be - p2_be, 
+    f2_cd - p2_cd,
+    f2_ce - p2_ce,
+    f2_de - p2_de
+])
+
+
+t_start = time()
+
+# eliminate parameters (BLs)
+I5 = eliminate(T5, [a, b, c, d, e, γ, h1, h2, l1, l2, l3])
+
+# Print execution time
+println("\nElapsed time: ", time() - t_start, " seconds")
+
+println("\nIdeal Generators on 5₁-cycle [a hybrid of b,e   [alphabetical clockwise]]:")
+println(I5)
+
+dim(I5) - 11
+
+##
+
+L1 = eliminate(T5, [a, b, c, d, e, γ, h1, h2, l2, l3])
+L2 = eliminate(T5, [a, b, c, d, e, γ, h1, h2, l1, l3])
+L3 = eliminate(T5, [a, b, c, d, e, γ, h1, h2, l1, l2])
+
+H1 = eliminate(T5, [a, b, c, d, e, γ, h2, l1, l2, l3])
+H2 = eliminate(T5, [a, b, c, d, e, γ, h1, l1, l2, l3])   # solve for h2 as a function of f2_x y
+
+G  = eliminate(T5, [a, b, c, d, e, h1, h2, l1, l2, l3])
+
+println("Totally mimics the 5-cycle for concordance factors.  No surprise here.")
+
+
