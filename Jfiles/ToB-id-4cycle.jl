@@ -108,13 +108,26 @@ s1 = t2[1] + t2[6]
 s2 = t2[2] + t2[5]
 s3 = t2[3] + t2[4]
 
+# now for the 4-cycle
 d1 = p2[1] + p2[6]
 d2 = p2[2] + p2[5]
 d3 = p2[3] + p2[4]
 
-d1 - d2
-d1 - d3
-d2 - d3
+c1 = d1 - d2
+c2 = d1 - d3
+c3 = d2 - d3
+
+cc1 = (p2_ab + p2_cd) - (p2_ac + p2_bd)
+cc2 = (p2_ab + p2_cd) - (p2_ad + p2_bc)
+cc3 = (p2_ac + p2_bd) - (p2_ad + p2_bc)
+
+##
+# Just playing
+f4_adcb = 1//2*(p2_ab + p2_cd - (p2_ac + p2_bd))
+f4_acdb = 1//2*(p2_ab + p2_cd - (p2_ad + p2_bc))
+f4_acdb = 1//2*(p2_ac + p2_bd - (p2_ad + p2_bc))
+
+
 ##
 psi = hom(R2, R3, vcat(gens(R3), fill(zero(R3), 4)))
 TT = psi(T)
